@@ -2,21 +2,24 @@ package challenge;
 
 public class CriptografiaCesariana implements Criptografia {
     final int deslocamento = 3;
+    final int Letra_a = 97;
+    final int Letra_z = 122;
 
     public String cifrar(String texto, int operacao) {
         if (!texto.isEmpty() && texto != null) {
-			String cifra = "";
+            texto = texto.toLowerCase();
+            String cifra = "";
             int codigo;
             for (int i = 0; i < texto.length(); i++) {
                 codigo = (int) texto.charAt(i);
-                if (codigo >= 97 && codigo <= 122) { //[a-z]
+                if (codigo >= Letra_a && codigo <= Letra_z) {
                     codigo+=operacao;                    
-                    if (codigo > 122) {
-						codigo = 97 + (codigo - 122);
+                    if (codigo > Letra_z) {
+                        codigo = Letra_a + (codigo - Letra_z);
                     } 
-                    if (codigo < 97) {
-						codigo = 122 - (97 - codigo);
-					}
+                    if (codigo < Letra_a) {
+                        codigo = Letra_z - (Letra_a - codigo);
+                    }
                 }
                 cifra+=(char) codigo;
             }
@@ -29,12 +32,12 @@ public class CriptografiaCesariana implements Criptografia {
 
     @Override
     public String criptografar(String texto) {
-		return cifrar(texto.toLowerCase(), deslocamento);
-	}
+        return cifrar(texto, deslocamento);
+    }
 
     @Override
     public String descriptografar(String texto) {
-        return cifrar(texto.toLowerCase(), -1 * deslocamento);
+        return cifrar(texto, -1 * deslocamento);
     }    
     public static void main(String[] args) {
         CriptografiaCesariana app = new CriptografiaCesariana();
