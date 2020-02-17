@@ -1,43 +1,42 @@
 package challenge;
 
 public class CriptografiaCesariana implements Criptografia {
-    final int deslocamento = 3;
-    final int Letra_a = 97;
-    final int Letra_z = 122;
+    private final int deslocamento = 3;
+    private final int asciiLetraA = 97;
+    private final int asciiLetraZ = 122;
 
-    public String cifrar(String texto, int operacao) {
-        if (!texto.isEmpty() && texto != null) {
+    private String cifrar(String texto, int operacao) {
+        if (texto.isEmpty() || texto == null) {
+            throw new IllegalArgumentException("Texto vazio!");
+        } else {
             texto = texto.toLowerCase();
             String cifra = "";
-            int codigo;
+            int codigoAscii;
             for (int i = 0; i < texto.length(); i++) {
-                codigo = (int) texto.charAt(i);
-                if (codigo >= Letra_a && codigo <= Letra_z) {
-                    codigo+=operacao;                    
-                    if (codigo > Letra_z) {
-                        codigo = Letra_a + (codigo - Letra_z);
+                codigoAscii = (int) texto.charAt(i);
+                if (codigoAscii >= asciiLetraA && codigoAscii <= asciiLetraZ) {
+                    codigoAscii += operacao * deslocamento;                    
+                    if (codigoAscii > asciiLetraZ) {
+                        codigoAscii = asciiLetraA + (codigoAscii - asciiLetraZ);
                     } 
-                    if (codigo < Letra_a) {
-                        codigo = Letra_z - (Letra_a - codigo);
+                    if (codigoAscii < asciiLetraA) {
+                        codigoAscii = asciiLetraZ - (asciiLetraA - codigoAscii);
                     }
                 }
-                cifra+=(char) codigo;
+                cifra += (char) codigoAscii;
             }
             return cifra;
-        } else {
-            throw new IllegalArgumentException("Texto vazio!");
-        }
-        
+        }        
     }
 
     @Override
     public String criptografar(String texto) {
-        return cifrar(texto, deslocamento);
+        return cifrar(texto, 1);
     }
 
     @Override
     public String descriptografar(String texto) {
-        return cifrar(texto, -1 * deslocamento);
+        return cifrar(texto, -1);
     }    
     public static void main(String[] args) {
         CriptografiaCesariana app = new CriptografiaCesariana();
